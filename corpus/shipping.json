@@ -1,0 +1,90 @@
+{
+  "description": "List of shipping aspect labels with corresponding keywords",
+  "price":
+      [
+        "fees",
+        "penalty",
+        "price",
+        "cost",
+        "pricey",
+        "expensive",
+        "overpriced",
+        "reasonable",
+        "unreasonable",
+        "value",
+        "affordable",
+        "cheap",
+        "$",
+        "bargain",
+        "budget",
+        "cash",
+        "discount",
+        "money",
+        "sale"
+      ],
+
+      "speed":
+      [
+        "speed",
+        "fast",
+        "quick",
+        "slow",
+        "forever",
+        "late",
+        "early"
+      ],
+     "website":
+     [
+       "easy to use"
+     ],
+     "service":
+     [
+       "covid",
+       "driver",
+       "placing order",
+       "delivery",
+       "policy",
+       "live tracking",
+       "sms notification",
+       "sms",
+       "text",
+       "text notification",
+       "proof of delivery",
+       "guarantee",
+       "insurance",
+       "special materials",
+       "alcohol",
+       "hazardous materials",
+       "other specialized products",
+       "specialized products",
+       "returns",
+       "refund",
+       "shipping label",
+       "label",
+       "handwritten",
+       "channels",
+       "multi-channel",
+       "amazon",
+       "ebay",
+       "shopify",
+       "shipstation",
+       "magento",
+       "woocommerce",
+       "woo-commerice",
+       "helpful",
+       "professional",
+       "courteous"
+     ],
+      "quality":
+      [
+        "damage",
+        "broken",
+        "crack",
+        "cracked",
+        "chip",
+        "chipped",
+        "packaging",
+        "tissue",
+        "tissue paper"
+      ]
+    }

@@ -1,0 +1,17 @@
+# Standard Conda libraries
+PyYaml
+ftfy
+unidecode
+pandas
+nltk
+gensim
+spacy
+
+# Non standard Conda libraries. Must use pip installation
+textblob
+gingerit
+emoji
+
+
+
+
