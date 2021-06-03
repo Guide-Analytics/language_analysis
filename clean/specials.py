@@ -8,7 +8,9 @@
 #
 # URL: <https://guideanalytics.ca>
 
+# License: UPDATE
 
+# Some of the functionalities may be modified for internal use
 
 import unicodedata
 

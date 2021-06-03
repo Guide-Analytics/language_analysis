@@ -9,6 +9,10 @@
 #
 # URL: <https://guideanalytics.ca>
 
+# License: UPDATE
+
+# Some of the functionalities may be modified for internal use
+
 import logging
 import re
 import sys
@@ -16,8 +20,8 @@ from unicodedata import category
 from emoji import UNICODE_EMOJI, demojize, emojize
 from ftfy import fix_text
 
-import constants
-from specials import save_replace
+from . import constants
+from .specials import save_replace
 
 log = logging.getLogger()
 

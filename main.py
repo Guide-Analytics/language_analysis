@@ -23,8 +23,12 @@ import json
 import re
 
 from clean.preprocessing import DataClean
-from absa.heatmap import heatmap
-from absa.wordcloud import wordcloud
+# from absa.heatmap import heatmap
+from absa.wordcloud import wordcloud_output
+from absa.text_analysis import aspect_match, sentiment_match, word_match
+from absa.load_corpus import load_corpus
+from clean.dataframe_clean import *
+
 
 def get_args():
     """
@@ -36,7 +40,9 @@ def get_args():
 
     :return: paras (argument parameters to pass through to the main function below)
     """
+    industry_lst = ['shipping', 'flashlight']
     parser = argparse.ArgumentParser()
+    parser.add_argument('--industry', type=str, default=None, choices=industry_lst, help='specify company type')
     parser.add_argument('--corpus', type=str, default=None, help='locate the corpus folder to use the corpus dataset')
     parser.add_argument('--data', type=str, default=None, help='data folder for data inputs')
     parser.add_argument('--output', type=str, default='line_chart', choices=['line_chart', 'heatmap', 'word_cloud', 'geomap'])
@@ -46,6 +52,8 @@ def get_args():
 
     with open(args.para) as fin:
         paras = yaml.safe_load(fin)
+    if args.industry is not None:
+        paras['industry'] = args.industry
     if args.corpus is not None and os.path.exists(args.corpus):
         paras['corpus'] = args.corpus
     if args.data is not None and os.path.exists(args.data):
@@ -60,7 +68,6 @@ def get_args():
     elif args.output == 'geomap':
         pass
 
-    print(paras)
     return paras
 
 
@@ -83,7 +90,6 @@ def generate_wordcloud(paras):
     logger = logging.getLogger()
 
     wordcloud()
-
 
 
 def generate_heatmap(paras):
@@ -120,7 +126,47 @@ def data_input(data_path):
     all_files = [i for i in glob.glob(os.path.join(data_path, '*.{}'.format(extension)))]
     combined_csv = pd.concat([pd.read_csv(f) for f in all_files])
 
-    print(combined_csv.head(5))
+    return combined_csv
+
+
+def data_analysis(data, corpus_path, industry):
+    """
+
+    :param data:
+    :return:
+    """
+    global industry_corp_const
+    from corpus_constants import CorporaConstants
+    ic = CorporaConstants()
+
+    if industry == 'shipping':
+        industry_corp_const = ic.shipping()
+
+    cleaned_data = data.apply(lambda entry: DataClean(entry['reviews']).use_cleantext(), axis=1)
+    data['reviews'] = cleaned_data
+    #cleaned_data = data.apply(lambda entry: DataClean(entry['reviews']).use_grammarfix(), axis=1)
+    #data['reviews'] = cleaned_data
+    for aspects in industry_corp_const:
+
+        corpus_keywords, aspects = load_corpus(corpus_path=corpus_path, ASPECTS=aspects)
+        new_data = aspect_match(data=data, keywords=corpus_keywords, ASPECTS=aspects)[0]
+
+        new_data = data_row_filter(data=new_data, col_name=aspects)
+        new_data = data_explode(data=new_data, first_col=aspects)
+        if new_data.empty:
+            print('No aspects detected')
+            continue
+        else:
+            new_data, sentiment_aspect = sentiment_match(data=new_data, ASPECTS=aspects)
+            new_data, word_aspect = word_match(data=new_data, keywords=corpus_keywords, ASPECTS=aspects)
+
+            new_data = data_misc_removal(data=new_data)
+            new_data = data_filter(data=new_data, first_col=sentiment_aspect, second_col=word_aspect)
+
+            new_data = data_explode(data=new_data, first_col=word_aspect).reset_index(drop=True)
+            new_data = data_same_join(data=new_data, main_col=word_aspect)
+            new_data = data_drop_dup(data=new_data, subset_col=['author_id', 'reviews', 'det_word', 'asp_word'])
+            new_data.to_csv(aspects+'.csv')
 
 
 def main():
@@ -128,16 +174,18 @@ def main():
     Main function to execute the language analysis tool
     :return:
     """
-    paras = get_args()
-    print(paras)
-    #paras['data_input'] = data_clean
+     #paras = get_args()
+    #print(paras)
 
-    #reviews_corpus = list(final_df['reviews'])
-    # Partition into sentences
-   # reviews_in_sentences = [sent_tokenize(str(review)) for review in reviews_corpus]
-   # reviews_length = [len(review) for review in reviews_in_sentences]
+    ## Industry and data/corpus path arguments
+    industry = 'shipping' # paras['industry']
+    data_path = './data/shipping/' # paras['data']
+    corpus_path = './corpus/shipping.json' #paras['corpus']
 
-    # train orginal bert
+    raw_data = data_input(data_path) # Raw data input
+    data_analysis(raw_data, corpus_path, industry) # Data industry with specified industry
+
+    """
     if paras['heatmap'] == True:
         if paras['corpus'] == './corpus' and paras['data'] == './data':
             generate_heatmap(paras)
@@ -146,9 +194,9 @@ def main():
             generate_wordcloud(paras)
     else:
         pass
-
+    """
 """
 if '__name__' == '__main__':
     main()
 """
-data_input('data/shipping')
+main()

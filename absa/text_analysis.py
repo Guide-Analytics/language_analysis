@@ -20,6 +20,7 @@ from nltk.tokenize import word_tokenize
 from textblob import TextBlob
 from textblob import Blobber
 from textblob.sentiments import PatternAnalyzer
+from .word_pair import word_detection
 pa = Blobber(analyzer=PatternAnalyzer())
 import nltk
 nltk.download('punkt')
@@ -90,28 +91,32 @@ def sentiment_match(data, ASPECTS):
     :param ASPECTS:
     :return:
     """
+
+    new_aspect_name = ASPECTS+'_sentiment'
     start = time.time()
-    data[ASPECTS] = data.apply(lambda x: findSentiment())
+    data[new_aspect_name] = data.apply(lambda x: findSentiment(x[ASPECTS]), axis=1)
     end = time.time()
     print(f"Took {end - start} seconds to find sentiment for each sentence.") # If needed to calculate
 
-    return data
+    return data, new_aspect_name
 
 
-
-def row_filter_output(data, col_name):
+def word_match(data, keywords, ASPECTS):
     """
 
     :param data:
-    :param col_name: Usually takes in ASPECT column names
+    :param ASPECTS:
     :return:
     """
-    data = data[data[col_name].notna()]
-    data = data.drop_duplicates(subset=['author_id', 'reviews'])
-    data = data[data[col_name].map(lambda d: str(d) != "")]
-    data = data[data[col_name].map(lambda d: len(d)) > 0]
 
-    return data
+    new_aspect_name = ASPECTS+'_match'
+    start = time.time()
+    data[new_aspect_name] = data.apply(lambda x: word_detection(x[ASPECTS], keywords), axis=1)
+    end = time.time()
+    print(f"Took {end - start} seconds to word match for each sentence.") # If needed to calculate
+
+    return data, new_aspect_name
+
 
 
 

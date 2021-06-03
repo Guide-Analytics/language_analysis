@@ -12,14 +12,13 @@
 #
 # URL: <https://guideanalytics.ca>
 
-from clean import clean
-
-import re
-
+from .clean import clean
 from textblob import TextBlob
 from string import punctuation
-from punctuation import PunctuationRemoval
-from grammar import GrammarTool
+from .punctuation import PunctuationRemoval
+from .grammar import GrammarTool
+
+import re
 
 
 class DataClean():
@@ -42,6 +41,15 @@ class DataClean():
         self.sentence = clean(self.sentence, no_punct=True, no_emoji=True,
                               no_phone_numbers=True, no_emails=True, no_urls=True)
 
+        return self.sentence
+
+    def use_cleantext_punc(self):
+        """
+
+        :return:
+        """
+        self.sentence = clean(self.sentence, no_punct=False, no_emoji=True,
+                              no_phone_numbers=True, no_emails=True, no_urls=True)
         return self.sentence
 
     def use_puncremoval(self):
@@ -87,10 +95,3 @@ class DataClean():
 
         return result
 
-
-
-test = DataClean('I have worm!!!!')
-
-result = test.use_grammarfix()
-print(result)
-print(type(result))

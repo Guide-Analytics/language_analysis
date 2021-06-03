@@ -11,20 +11,22 @@
 
 import json
 
-lst = ['price', 'speed', 'website', 'quality', 'service']
 
 def load_corpus(corpus_path, ASPECTS):
     """
-
-    :param corpus_path:
-    :param ASPECTS:
-    :return:
+    Load corpus data from the corpus folder (or in other locations if specified in 'corpus_path')
+    :param corpus_path: str, path of the corpus datafile
+    :param ASPECTS: str, aspect string ONLY
+    :return: [] list of keywords, associated with the ASPECT given
     """
+
     with open(corpus_path, 'r') as read_file:
         corpus_data = json.load(read_file)
         keywords = corpus_data[ASPECTS]
 
     return keywords, ASPECTS
+
+
 
 
 

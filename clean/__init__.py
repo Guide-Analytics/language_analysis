@@ -7,5 +7,5 @@ clean for Language Analysis
 ~~~~~~~~~~~~~~~~
 
 """
-from .clean import *
+#from .clean import *
 #from .punctuation import *
