@@ -29,8 +29,8 @@ class DataClean():
     - use_cleantext: cleans all text
     """
 
-    def __init__(self, sentence):
-        self.clean = ""
+    def __init__(self, sentence, model):
+        self.model = model
         self.sentence = sentence
 
     def use_cleantext(self):
@@ -38,18 +38,28 @@ class DataClean():
         Does everything
         :return:
         """
-        self.sentence = clean(self.sentence, no_punct=True, no_emoji=True,
+        self.sentence = clean(str(self.sentence), no_punct=True, no_emoji=True,
                               no_phone_numbers=True, no_emails=True, no_urls=True)
 
         return self.sentence
 
-    def use_cleantext_punc(self):
+    def use_cleantext_BEFORE(self):
         """
 
         :return:
         """
-        self.sentence = clean(self.sentence, no_punct=False, no_emoji=True,
-                              no_phone_numbers=True, no_emails=True, no_urls=True)
+        self.sentence = clean(str(self.sentence), no_punct=False, no_emoji=False,
+                              no_phone_numbers=True, no_emails=True, no_urls=True, lower=False)
+
+        return self.sentence
+
+    def use_cleantext_AFTER(self):
+
+        self.sentence = clean(str(self.sentence), no_punct=False, no_emoji=False,
+                              no_phone_numbers=True, no_emails=True, no_urls=True,
+                              normalize_whitespace=False, no_line_breaks=True,
+                              strip_lines=False, lower=False)
+
         return self.sentence
 
     def use_puncremoval(self):
@@ -85,13 +95,19 @@ class DataClean():
 
         return self.clean
 
-    def use_grammarfix(self):
+    def use_grammarfix(self, version='v1'):
         """
         Fixes grammar mistakes
         :return:
         """
-        gram_sent = GrammarTool(self.sentence)
-        result = gram_sent.grammarFix()
+        if version == 'v1':
+            gram_sent = GrammarTool(str(self.sentence), model=None, version='v1')
+            self.sentence = gram_sent.grammarFix()
+        elif version == 'v2':
+            gram_sent = GrammarTool(str(self.sentence), model=self.model, version='v2')
+            self.sentence = gram_sent.grammarFix_v2()
+        else:
+            return self.sentence
 
-        return result
+        return self.sentence
 

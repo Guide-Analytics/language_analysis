@@ -25,9 +25,63 @@ class CorporaConstants():
         WEBSITE = "website"
         SERVICE = "service"
         QUALITY = "quality"
-        self.corpus.extend([PRICE, SPEED, WEBSITE, SERVICE, QUALITY])
+        TECHNOLOGY = "technology"
+        INTERNATIONAL = "international"
+        COVID = "covid"
+        GENERAL = "general"
+
+        self.corpus.extend([PRICE, SPEED, WEBSITE, SERVICE, QUALITY, TECHNOLOGY, INTERNATIONAL, COVID, GENERAL])
 
         return self.corpus
+
+    def real_estate(self):
+        """
+
+        :return:
+        """
+        self.corpus = list()
+        KNOWLEDGE = "knowledgeability"
+        PROFESSIONALISM = "professionalism"
+        COMMUNICATION = "communication and responsive"
+        WEBSITE_TECH = "website and technology"
+        VALUE_OF_SERVICE = "value of service"
+        REACH_LEAD_GEN = "reach and lead gen"
+        FRIENDLINESS = "friendliness"
+        HOME_PREP = "home prep"
+
+
+        self.corpus.extend([KNOWLEDGE, PROFESSIONALISM, COMMUNICATION,
+                            WEBSITE_TECH, VALUE_OF_SERVICE, REACH_LEAD_GEN,
+                            FRIENDLINESS, HOME_PREP])
+
+        return self.corpus
+
+    def neighbourhoods(self):
+        """
+
+        :return:
+        """
+
+        self.corpus = list()
+        HOUSING = "housing"
+        SAFETY = "safety"
+        TRANSIT = "transit"
+        SHOPPING = "shopping"
+        HEALTH = "health"
+        ENTERTAINMENT = "entertainment"
+        COMMUNITY_CRIME = "community and crime"
+        DIVERSITY_INCLUSION = "diversity and inclusion"
+        EDUCATION = "education"
+        EMPLOYMENT = "employment"
+        LOCAL = "local"
+
+
+        self.corpus.extend([HOUSING, SAFETY, TRANSIT, SHOPPING,
+                            HEALTH, ENTERTAINMENT, COMMUNITY_CRIME,
+                            DIVERSITY_INCLUSION, EDUCATION, EMPLOYMENT,
+                            LOCAL])
+        return self.corpus
+
 
     def flashlight(self):
         """

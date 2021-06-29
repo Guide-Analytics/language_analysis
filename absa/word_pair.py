@@ -3,6 +3,7 @@
 #
 # Word Pair Extraction v1.0
 # There is a 2nd version coming. First version does not cover all anomalies in a sentence structure
+# DEPRECRATED
 #
 # Copyright (C) 2019-2021 Guide Analytics
 # Author: Michael Brock Li <michael.brock.li@gmail.com>

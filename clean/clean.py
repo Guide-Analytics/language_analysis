@@ -159,6 +159,13 @@ def replace_digits(text, replace_with="0"):
     return re.sub(r"\d", replace_with, text)
 
 
+def replace_emoji(text, replace_with="emoji review"):
+    for x in UNICODE_EMOJI["en"]:
+        if x in text:
+            text = text.replace(x, replace_with)
+    return text
+
+
 def replace_currency_symbols(text, replace_with="<CUR>"):
     """
     Replace all currency symbols in ``text`` str with string specified by ``replace_with`` str.
@@ -230,6 +237,7 @@ def clean(
     replace_with_digit="0",
     replace_with_currency_symbol="<CUR>",
     replace_with_punct="",
+    replace_with_emoji="emoji review",
     lang="en",
 ):
     """
@@ -289,6 +297,8 @@ def clean(
         text = replace_numbers(text, replace_with_number)
     if no_digits:
         text = replace_digits(text, replace_with_digit)
+    if no_emoji:
+        text = replace_emoji(text, replace_with_emoji)
     if no_punct:
         if replace_with_punct == "":
             text = remove_punct(text)

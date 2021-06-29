@@ -10,6 +10,7 @@
 #
 # URL: <https://guideanalytics.ca>
 
+from itertools import chain
 import pandas as pd
 
 def data_misc_removal(data):
@@ -36,13 +37,13 @@ def data_filter(data, first_col, second_col):
 
     :param data:
     :param first_col:
-    :param second_col:
+    :param second_col: typically used in detected list of words (likely chance this not be detected)
     :return:
     """
     data = data[data[first_col].notna()]
     data = data[data[second_col].notna()]
     data = data[data[second_col].map(lambda d: d != [])]
-    data = data.dropna(subset=[first_col, second_col])
+    #data = data.dropna(subset=[first_col, second_col])
 
     return data
 
@@ -53,7 +54,11 @@ def data_explode(data, first_col):
     :param data:
     :return:
     """
-    data = data.explode(first_col)
+    try:
+        data = data.explode(first_col)
+    except KeyError:
+        print('Key doesnt exist - because column was not created')
+        return data
 
     return data
 
@@ -70,7 +75,7 @@ def data_drop_dup(data, subset_col):
     return data
 
 
-def data_same_join(data, main_col, first_col='det_word', second_col='asp_word'):
+def data_tuple_v1(data, main_col, first_col='asp_word', second_col='det_word'):
     """
 
     :param first_data:
@@ -80,8 +85,17 @@ def data_same_join(data, main_col, first_col='det_word', second_col='asp_word'):
     :param second_col:
     :return:
     """
-
-    data = data.join(pd.DataFrame(pd.DataFrame(data[main_col].tolist(), columns=[first_col, second_col])))
+    try:
+        if data[main_col].tolist() == []:
+            data[first_col] = ''
+            data[second_col] = ''
+        else:
+            data[first_col] = pd.DataFrame(data[main_col].tolist(), index=data.index)[0]
+            data[second_col] = pd.DataFrame(data[main_col].tolist(), index=data.index)[1]
+    except KeyError:
+        print('Key doesnt exist - because column was not created')
+        data[first_col] = ''
+        data[second_col] = ''
 
     return data
 
@@ -99,3 +113,44 @@ def data_row_filter(data, col_name):
     data = data[data[col_name].map(lambda d: len(d)) > 0]
 
     return data
+
+
+def data_tuple(data, col_name, col_lst):
+    """
+
+    :param data:
+    :param col_name:
+    :param col_lst:
+    :return:
+    """
+    for n, col in enumerate(col_lst):
+        data[col] = data[col_name].apply(lambda col: col[n])
+
+    data = data.drop(col_name, axis=1)
+    return data
+
+
+def data_tuple_v2(data, col_name, col_lst):
+    """
+
+    :param data:
+    :param col_name:
+    :param col_lst:
+    :return:
+    """
+    data = pd.DataFrame(list(chain.from_iterable(data[col_name])), columns=col_lst)\
+             .reset_index(drop=True)
+
+    return data
+
+
+def data_string_join(data, col_name):
+    """
+
+    :param data:
+    :param col_name:
+    :return:
+    """
+
+
+    return

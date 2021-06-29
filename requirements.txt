@@ -11,7 +11,7 @@ spacy
 textblob
 gingerit
 emoji
-
-
+torch
+flair
 
 

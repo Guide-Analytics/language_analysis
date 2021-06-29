@@ -8,23 +8,20 @@
 #
 # URL: <https://guideanalytics.ca>
 
-import pandas as pd
-import numpy as np
-import string
-import re
 import time
-import nltk
-import pdb
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from textblob import TextBlob
 from textblob import Blobber
 from textblob.sentiments import PatternAnalyzer
 from .word_pair import word_detection
+from .aspect_extraction import *
 pa = Blobber(analyzer=PatternAnalyzer())
 import nltk
 nltk.download('punkt')
+import flair
 
+flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
 
 def checkPresence(sentence, keywords):
     """
@@ -53,6 +50,25 @@ def findSentiment(sentence):
         return textblob_result.sentiment.polarity #(pa(sentence).sentiment[0])
 
 
+def findSentiment_v2(sentence):
+    """
+
+    :param sentence:
+    :return:
+    """
+    try:
+        s = flair.data.Sentence(sentence)
+        flair_sentiment.predict(s)
+        if s.labels[0].value == 'POSITIVE':
+            return float(s.labels[0].score)
+        elif s.labels[0].value == 'NEGATIVE':
+            return float(-s.labels[0].score)
+        else:
+            return float(s.labels[0].score)
+    except:
+        return 0.0
+
+
 def filteredReview(reviews, keywords):
     """
 
@@ -63,7 +79,7 @@ def filteredReview(reviews, keywords):
     """
     reviews_in_sentences = sent_tokenize(str(reviews))
     ret = []
-    for sentences in reviews_in_sentences:
+    for sentences in reviews_in_sentences: 
         if checkPresence(sentences.lower(), keywords):
             ret.append(sentences)
     return ret
@@ -84,7 +100,7 @@ def aspect_match(data, keywords, ASPECTS, column='reviews'):
     return data, keywords, ASPECTS
 
 
-def sentiment_match(data, ASPECTS):
+def sentiment_match(data, ASPECTS, col_name='sentences'):
     """
 
     :param data:
@@ -92,9 +108,9 @@ def sentiment_match(data, ASPECTS):
     :return:
     """
 
-    new_aspect_name = ASPECTS+'_sentiment'
+    new_aspect_name = 'score'
     start = time.time()
-    data[new_aspect_name] = data.apply(lambda x: findSentiment(x[ASPECTS]), axis=1)
+    data[new_aspect_name] = data.apply(lambda x: findSentiment_v2(x[col_name]), axis=1)
     end = time.time()
     print(f"Took {end - start} seconds to find sentiment for each sentence.") # If needed to calculate
 
@@ -118,5 +134,36 @@ def word_match(data, keywords, ASPECTS):
     return data, new_aspect_name
 
 
+def phrase_match(data, column='reviews'):
+    """
+
+    :param keywords:
+    :param ASPECTS:
+    :return:
+    """
+    start = time.time()
+    data['sent_phrase'] = data.apply(lambda x: phrase_extractor(x[column]), axis=1)
+    end = time.time()
+    print(f"Took {end - start} seconds to find phrase with corresponding sentences.") # If needed to calculate
+
+    return data
+
+
+def word_match_v2(data, keywords, ASPECTS, col_name='phrases'):
+    """
+
+    :param data:
+    :param keywords:
+    :param ASPECTS:
+    :param col_name:
+    :return:
+    """
+
+    start = time.time()
+    data[ASPECTS] = data.apply(lambda x: find_keywords(x[col_name], keywords, ASPECTS), axis=1)
+    end = time.time()
+    print(f"Took {end - start} seconds to word match for each sentence.") # If needed to calculate
+
+    return data, ASPECTS
 
 

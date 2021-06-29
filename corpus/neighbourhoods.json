@@ -1,0 +1,141 @@
+{
+  "description": "List of neighbourhoods aspect labels with corresponding keywords",
+  "housing":
+          [
+            "house",
+            "apartment",
+            "condo",
+            "real estate",
+            "estate",
+            "neighbourhood",
+            "neighborhood",
+            "affordable",
+            "property value",
+            "ownership",
+            "condominium",
+            "residential"
+          ],
+  "safety":
+          [
+            "safe",
+            "unsafe",
+            "crime",
+            "violence",
+            "stab",
+            "shoot",
+            "accident",
+            "injury",
+            "murder",
+            "dangerous"
+          ],
+  "transit":
+          [
+            "bus",
+            "train",
+            "taxi",
+            "uber",
+            "lyft",
+            "bike",
+            "cycle",
+            "bicycle",
+            "ferry",
+            "cab"
+          ],
+  "shopping":
+          [
+            "market",
+            "produce",
+            "shop",
+            "restaurant",
+            "touristy",
+            "overpriced",
+            "mall",
+            "grocery",
+            "store",
+            "plaza",
+            "center",
+            "centre",
+            "marketplace"
+          ],
+  "health":
+          [
+            "hospital",
+            "medical",
+            "doctor",
+            "clinic",
+            "pharmacy",
+            "drugstore",
+            "health care",
+            "healthcare",
+            "medicine"
+          ],
+  "entertainment":
+          [
+            "gym",
+            "sport",
+            "bar",
+            "club",
+            "nightclub",
+            "night club",
+            "attraction",
+            "fun",
+            "restaurant",
+            "arcade",
+            "clubhouse",
+            "theater",
+            "theatre",
+            "pub"
+          ],
+  "community and crime":
+          [
+            "drug",
+            "addict",
+            "junkie",
+            "homeless",
+            "smell",
+            "vagrant",
+            "drifter",
+            "beggar",
+            "scary",
+            "druggie"
+          ],
+  "diversity and inclusion":
+          [
+            "diverse",
+            "welcoming",
+            "newcomer",
+            "immigrant",
+            "citizen",
+            "racist",
+            "minority"
+          ],
+  "education":
+          [
+            "school",
+            "university",
+            "college",
+            "high school",
+            "middle school",
+            "elementary school",
+            "day care",
+            "daycare",
+            "secondary school",
+            "grad school",
+            "grade school"
+          ],
+  "employment":
+          [
+            "job",
+            "career",
+            "unemployment",
+            "poverty",
+            "self-employment",
+            "entrepreneur",
+            "business"
+          ],
+  "local":
+          [
+            "i live",
+            "been here"
+          ]
+    }

@@ -13,12 +13,20 @@ from gingerit.gingerit import GingerIt
 
 class GrammarTool(object):
 
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, text, model, version):
+        """
+
+        :param text:
+        """
+        if version == 'v2':
+            self.gf = model
+
+        self.text = str(text)
 
     def grammarFix(self):
         """
-
+        GingerIt grammar fix tool will has its limitations (cuase it's not going to process
+        large sentences. Use GingerIT for shorter sentences
         :return:
         """
 
@@ -27,5 +35,18 @@ class GrammarTool(object):
             result = str(parser.parse(self.text)['result'])
             return result
         except:
-            result = str(self.text)
+            result = self.text
             return result
+
+    def grammarFix_v2(self):
+        """
+        Gramform tool ..
+        :return:
+        """
+        corrected_sentence = self.gf.correct(self.text)
+        try:
+            corrected_sentence = corrected_sentence[0]
+        except IndexError:
+            corrected_sentence = self.text
+
+        return corrected_sentence
