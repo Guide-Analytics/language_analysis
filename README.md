@@ -31,6 +31,7 @@
 
 - Install the requirements in *requirements.txt* file
 - Simply run the *main.py* file with the following arguments 
+
 | Argument        | Choices          | Description  |
 | :-------------: |:-------------:| -----:|
 
