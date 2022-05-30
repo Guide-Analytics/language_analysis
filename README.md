@@ -1,5 +1,5 @@
 # Language Analysis Tool - For Reviews (Information and Question Extraction)
-### Author: Michael B. Li
+### Author: Michael Li
 
 ## NLP Toolkits Knowledge Base:
 - Spacy
