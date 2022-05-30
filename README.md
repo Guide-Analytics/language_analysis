@@ -36,7 +36,7 @@
 | :-------------: |:-------------:| -----:|
 | &ndash&ndashindustry    | [shipping, flashlight] | specify company type |
 | &ndash&ndashcorpus    |   ./corpus  |   locate the corpus folder to use the corpus dataset |
-| &ndash&ndashdata | ./data/[data_location]/[\*.json, \*.csv]   |  data folder for data inputs. See examples inside the folder |
+| --data | ./data/[data_type_dir]/[\*.json, \*.csv]   |  data folder for data inputs. See examples inside the folder |
 
     parser.add_argument('--data_type', type=str, default='csv', choices=datatype_lst, help='file_type')
     parser.add_argument('--output', type=str, default='line_chart', choices=['line_chart', 'heatmap', 'word_cloud', 'geomap'])
