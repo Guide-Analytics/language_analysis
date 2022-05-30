@@ -34,12 +34,9 @@
 
 | Argument        | Choices          | Description  |
 | :-------------: |:-------------:| -----:|
-| &ndash&ndashindustry    | [shipping, flashlight] | specify company type |
-| &ndash&ndashcorpus    |   ./corpus  |   locate the corpus folder to use the corpus dataset |
+| --industry    | [shipping, flashlight] | specify company type |
+| --corpus    |   ./corpus  |   locate the corpus folder to use the corpus dataset |
 | --data | ./data/[data_type_dir]/[\*.json, \*.csv]   |  data folder for data inputs. See examples inside the folder |
+| --data_type | [csv, json]   |  data file type (ex: json file, csv file) |
+| --output | [line_chart, heatmap, word_cloud, geomap]   | result output category. The results will produce a json file in order for the frontend to read the data and produce a visualization|
 
-    parser.add_argument('--data_type', type=str, default='csv', choices=datatype_lst, help='file_type')
-    parser.add_argument('--output', type=str, default='line_chart', choices=['line_chart', 'heatmap', 'word_cloud', 'geomap'])
-    parser.add_argument('--para', type=str, default='para.yml', help="the path to the parameter file, has to be a yaml file")
-```
-```
